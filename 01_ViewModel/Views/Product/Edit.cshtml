@@ -1,0 +1,137 @@
+﻿@model EditProductViewModel
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+    string action = Model.Product == null ? "/Product/Add" : "/Product/Edit";
+}
+
+<div class="container">
+
+    <h3>@ViewBag.title</h3>
+    <form action="@action" method="post">
+        @if (Model.Product != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Product.Id" />
+        }
+
+
+        <div>
+            <label>
+                    Id:
+                </label>
+            @if (Model.Product != null)
+            {
+                <input type="text" disabled value="@Model.Product.Id" />
+            }
+
+
+        </div>
+
+        
+
+        <div class="form-group">
+            <label for="categoryId">Kategori</label>
+            <select name="categoryId" class="form-control" id="categoryId">
+                @foreach (var item in Model.AllCategories)
+                {
+                    if (Model.Product != null)
+                    {
+
+                        <option @(Model.Product.CategoryId == item.Id ? "selected" : "") value="@item.Id">@item.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+
+                }
+            </select>
+
+
+
+        </div>
+        <div class="form-group">
+
+
+            @foreach (var item in (List<_01_ViewModel.Data.Patlangac>)ViewData["Patlangacs"])
+            {
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        @if (Model.Product == null)
+                        {
+                            <input class="form-check-input" name="PatlangacValue" value="@item.Id" type="checkbox" /> }
+                        else
+                        {
+                            string isSelected = Model.Product.Patlangacs.Any(t => t.Id == item.Id) ? "checked" : "";
+
+                            <input class="form-check-input" @isSelected name="PatlangacValue" value="@item.Id" type="checkbox" />
+                        }
+
+                        @item.Name
+                    </label>
+                </div>      
+             }
+
+        </div>
+        <div class="form-group">
+            <label for="Name">
+                Adı:
+            </label>
+            @if (Model.Product != null)
+            {
+                <input class="form-control" id="Name" type="text" name="Name" value="@Model.Product.Name" />
+            }
+            else
+            {
+                <input class="form-control" type="text" name="Name" id="Name" />
+            }
+
+        </div>
+        <div class="form-group">
+            <label for="Description">
+                Açıklama:
+            </label>
+            @if (Model.Product != null)
+            {
+                <textarea class="form-control" name="Description" id="Description">@Model.Product.Description</textarea>
+            }
+            else
+            {
+                <textarea class="form-control" name="Description" ></textarea>
+            }
+        </div>
+        <div class="form-group">
+            <label for="Price">
+                Fiyat:
+            </label>
+            @if (Model.Product != null)
+            {
+                <input class="form-control" type="text" name="Price" value="@Model.Product.Price" id="Price" />
+            }
+            else
+            {
+                <input class="form-control" type="text" name="Price" id="Price" />
+            }
+        </div>
+        <div class="form-group">
+            @if (Model.Product != null)
+            {
+                <input class="btn btn-primary" type="submit" value="Güncelle" />
+            }
+            else
+            {
+                <input class="btn btn-primary" type="submit" value="Ekle" />
+            }
+        </div>
+
+
+    </form>
+</div>
+
+
